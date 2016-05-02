@@ -13,8 +13,7 @@ var webpackProdConfig = {
         },
         output: {
             path: path.join( __dirname, 'build' ),
-            filename: '[name].[chunkhash].js',
-            chunkFilename: '[chunkhash].js'
+            filename: '[name].[hash].js'
         },
     },
 
@@ -36,7 +35,7 @@ var webpackProdConfig = {
             }
         }),
         new CompressionPlugin({
-            asset: '{file}.gz',
+            asset: '[file].gz[query]',
             algorithm: 'gzip',
             threshold: 10240,
             minRatio: 0.8

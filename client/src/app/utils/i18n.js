@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 import {Promise} from 'es6-promise';
-import XHR from 'i18next-xhr-backend/lib';
+import XHR from 'i18next-xhr-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import Debug from 'debug';
 
@@ -11,7 +11,7 @@ debug('navigator.languages: ', navigator.languages);
 const languagesDetectorOption = {
   // order and from where user language should be detected
     order: ['localStorage', 'navigator', 'querystring', 'cookie'],
-
+    //order: ['navigator'],
     // keys or params to lookup language from
     lookupQuerystring: 'lng',
     lookupCookie: 'i18next',

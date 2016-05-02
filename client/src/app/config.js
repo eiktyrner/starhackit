@@ -7,13 +7,14 @@ let config = {
 
     general: {
         title: 'StarHackIt',
-        description: 'StarHackIt is a fullstack boilerplate written in es6/es7',
+        description: 'React Redux Node StarterKit',
         apiUrl: '/api/v1/',
         analytics: {
             google: ""
         },
         socialAuth: {
-            facebook: true
+            facebook: true,
+            fidor: false
         }
     },
 

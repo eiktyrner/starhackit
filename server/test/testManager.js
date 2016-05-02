@@ -23,7 +23,9 @@ let TestMngr = function(){
     client(name){
       return clientsMap[name];
     },
-
+    clients(){
+      return _.values(clientsMap);
+    },
     login() {
       return Promise.map(_.values(clientsMap),function(client) {
         return client.login({
@@ -63,5 +65,4 @@ TestMngr.getInstance = function(){
     return this.instance;
 };
 
-//module.exports = TestMngr.getInstance();
 module.exports = TestMngr.getInstance();

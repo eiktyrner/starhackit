@@ -1,6 +1,7 @@
 import Router from 'koa-66';
 import passport from 'koa-passport';
 import AuthenticationApi from './AuthenticationApi';
+import jwt from 'jsonwebtoken';
 
 let log = require('logfilename')(__filename);
 
@@ -13,7 +14,11 @@ export function AuthenticationHttpController(app, publisherUser){
       return passport.authenticate('local', function (user, info) {
         log.debug("login %s, %s", JSON.stringify(user), info);
         if (user) {
-          ctx.body = user;
+          //TODO secret from config file
+          ctx.body = {
+              user,
+              token: jwt.sign(user, "secret")
+          };
           ctx.login(user, error => {
             if(error){
               log.error("login ", error);
@@ -65,6 +70,10 @@ export default function AuthenticationRouter(app, publisherUser){
   router.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }));
   router.get('/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/login', successRedirect : '/login'}));
+
+  router.get('/fidor', passport.authenticate('fidor', { scope: ['email'] }));
+  router.get('/fidor/callback',
+      passport.authenticate('fidor', { failureRedirect: '/login', successRedirect : '/login'}));
 
   app.server.baseRouter().mount('auth', router);
 

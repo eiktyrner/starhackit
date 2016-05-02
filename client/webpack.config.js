@@ -4,6 +4,7 @@ var webpack = require( 'webpack' );
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var purify = require("purifycss-webpack-plugin");
 var pkg = require('./package.json');
 
 var pathAppTo;
@@ -19,6 +20,7 @@ module.exports = function ( options ) {
         devServer: {
             contentBase: path.join( __dirname, 'src' ),
             publicPath: '/',
+            outputPath: 'build',
             hot: true,
             inline: true,
             historyApiFallback: true,
@@ -57,6 +59,11 @@ module.exports = function ( options ) {
               template: 'src/index.ejs',
               inject: false
             }),
+            /*
+            new purify({
+                basePath: __dirname,
+            }),
+            */
             new webpack.HotModuleReplacementPlugin(),
             new webpack.NoErrorsPlugin(),
 
@@ -68,14 +75,12 @@ module.exports = function ( options ) {
                 { from: './locales/**/*.json' }
             ]),
             new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(fr|it)$/),
-            new webpack.optimize.CommonsChunkPlugin( 'vendor', 'vendor.js' )
+            new webpack.optimize.CommonsChunkPlugin({names: ['vendor']})
         ],
         resolve: {
+            root: path.join( __dirname, 'src', 'app'),
             extensions: [ '', '.js', '.jsx', '.styl', 'css' ],
             alias: {
-                i18next: 'i18next/lib/index.js',
-                'i18next-browser-languagedetector': 'i18next-browser-languagedetector/lib/index.js',
-                'i18next-localstorage-cache': 'i18next-localstorage-cache/lib/index.js',
                 //application aliases
                 actions: pathAppTo( 'actions' ),
                 components: pathAppTo( 'components' ),
@@ -89,10 +94,8 @@ module.exports = function ( options ) {
                 views: pathAppTo( 'views' ),
                 utils: pathAppTo( 'utils' ),
                 parts: pathAppTo( 'parts' ),
-
                 assets: pathTo( 'assets' ),
-                config: pathAppTo( 'config.js' ),
-
+                config: pathAppTo( 'config.js' )
             }
         },
         module: {
